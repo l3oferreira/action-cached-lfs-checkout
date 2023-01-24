@@ -67,7 +67,7 @@ runs:
       shell: pwsh
 
     - name: Restore LFS cache
-      uses: actions/cache@v3.2.2
+      uses: actions/cache@v3.2.0
       id: lfs-cache
       with:
         path: |
