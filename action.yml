@@ -40,11 +40,6 @@ inputs:
       'Whether to configure the token or SSH key with the local git config
     required: false
     default: true
-  shell:
-    description: >
-      'Whether to configure the shell to execute the commands
-    required: false
-    default: bash    
 
 runs:
   using: "composite"
