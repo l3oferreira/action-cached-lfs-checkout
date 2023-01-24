@@ -50,6 +50,11 @@ inputs:
       'Whether to configure the token or SSH key with the local git config
     required: false
     default: true
+  shell:
+    description: >
+      'Whether to configure the shell to execute the commands
+    required: false
+    default: bash    
 
 runs:
   using: "composite"
@@ -69,7 +74,7 @@ runs:
         git lfs ls-files --long --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}" | cut -d ' ' -f1 > .lfs-assets-id-unsorted
         git submodule foreach git lfs ls-files --long --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}" | cut -d ' ' -f1 >> .lfs-assets-id-unsorted
         cat .lfs-assets-id-unsorted | sort > .lfs-assets-id
-      shell: bash
+      shell: ${{ inputs.shell }}
 
     - name: Create Submodule LFS Cache Paths
       run: |
@@ -84,7 +89,7 @@ runs:
 
         echo "CACHE_PATHS=$CACHE_PATHS" >> $GITHUB_OUTPUT
       id: cache-paths
-      shell: bash
+      shell: ${{ inputs.shell }}
 
     - name: Restore LFS cache
       uses: actions/cache@v3
@@ -99,11 +104,11 @@ runs:
       run: |
         git lfs pull --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}"
         git submodule foreach git lfs pull --include  "${{ inputs.include }}" --exclude  "${{ inputs.exclude }}"
-      shell: bash
+      shell: ${{ inputs.shell }}
 
     # Don't leave behind temp files in case build system checks for dirty workspace
     - name: Cleanup Temp Files
       run: |
         rm .lfs-assets-id-unsorted
         rm .lfs-assets-id
-      shell: bash
+      shell: ${{ inputs.shell }}
