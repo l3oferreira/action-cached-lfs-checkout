@@ -75,10 +75,26 @@ runs:
         key: lfs-${{ hashFiles('.lfs-assets-id') }}-v2
 
     - name: Git LFS Pull
+      if: runner.os == 'Linux'    
       run: |
         git lfs pull --include "${{ inputs.include }}"
+      shell: bash
+
+    - name: Git LFS Pull
+      if: runner.os == 'Windows'
+      run: |
+        git lfs pull --include "${{ inputs.include }}"
+      shell: pwsh
 
     - name: Cleanup Temp Files
+      if: runner.os == 'Linux'    
       run: |
         rm .lfs-assets-id-unsorted
         rm .lfs-assets-id
+      shell: bash
+
+    - name: Cleanup Temp Files
+      if: runner.os == 'Windows'    
+      run: |
+        rm .lfs-assets-id
+      shell: pwsh
