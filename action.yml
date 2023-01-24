@@ -73,6 +73,7 @@ runs:
         path: |
           .git/lfs
         key: lfs-${{ hashFiles('.lfs-assets-id') }}-v2
+        enableCrossOsArchive: true        
 
     - name: Git LFS Pull
       if: runner.os == 'Linux'    
